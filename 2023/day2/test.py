@@ -1,7 +1,7 @@
 from .solution import Solution
 
 
-def test():
+def test_part2():
     example_input = [
         "Game 1: 3 blue, 4 red; 1 red, 2 green, 6 blue; 2 green",
         "Game 2: 1 blue, 2 green; 3 green, 4 blue, 1 red; 1 green, 1 blue",
@@ -10,4 +10,4 @@ def test():
         "Game 5: 6 red, 1 blue, 3 green; 2 blue, 1 red, 2 green",
     ]
     result = Solution(example_input).result()
-    assert result == 8
+    assert result == 2286

@@ -20,15 +20,20 @@ class Solution:
             game_id = game_id.split()[-1]
             game_id = int(game_id)
             game_result = game_result.strip()
-            valid_line = True
+            values = {
+                "red": [],
+                "green": [],
+                "blue": [],
+            }
             for match in pattern.findall(game_result):
                 value, color = match.split()
-                if self.limits[color] < int(value):
-                    print(f"{game_id} wrong line {line}")
-                    valid_line = False
-                    break
-            if valid_line:
-                result += game_id
+                values[color].append(int(value))
+            multiplication = 1
+            for color, elements in values.items():
+                values[color] = max(elements)
+                multiplication *= values[color]
+            print(f"game {game_id} values: {values}")
+            result += multiplication
         return result
 
 
