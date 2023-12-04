@@ -5,33 +5,26 @@ class Day4Solution(Solution):
     def result(self):
         raise NotImplementedError
 
-    def parsed_card(self):
+    def parse_cards(self):
         for line in self.data:
-            card_id, card_numbers = line.split(":")
-            card_id = card_id.split()[-1]
-            card_id = int(card_id)
+            _, card_numbers = line.split(":")
             card_numbers = card_numbers.strip()
             winning_numbers, your_numbers = card_numbers.split(" | ")
-            winning_number = [int(x) for x in winning_numbers.split()]
-            your_numbers = [int(x) for x in your_numbers.split()]
-            yield card_id, winning_number, your_numbers
+            winning_number = set(int(x) for x in winning_numbers.split())
+            your_numbers = set(int(x) for x in your_numbers.split())
+            yield len(winning_number & your_numbers)
 
 
 class Part1Solution(Day4Solution):
     def result(self):
-        result = 0
-        for card_id, winning, your in self.parsed_card():
-            won = 0
-            for number in your:
-                if number in winning:
-                    if won < 2:
-                        won += 1
-                    else:
-                        won = won * 2
-            result += won
-        return result
+        return sum(1 << card >> 1 for card in self.parse_cards())
 
 
 class Part2Solution(Day4Solution):
     def result(self):
-        return None
+        cards = list(self.parse_cards())
+        counts = [1 for _ in cards]
+        for i, card in enumerate(cards):
+            for j in range(card):
+                counts[i + j + 1] += counts[i]
+        return sum(counts)
