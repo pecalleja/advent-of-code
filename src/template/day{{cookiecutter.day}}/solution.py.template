@@ -1,0 +1,17 @@
+from aoc2023 import Solution
+
+
+class Day{{cookiecutter.day}}Solution(Solution):
+
+    def result(self):
+        raise NotImplementedError
+
+
+class Part1Solution(Day{{cookiecutter.day}}Solution):
+    def result(self):
+        return None
+
+
+class Part2Solution(Day{{cookiecutter.day}}Solution):
+    def result(self):
+        return None
