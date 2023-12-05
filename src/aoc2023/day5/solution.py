@@ -62,4 +62,14 @@ class Part1Solution(Day5Solution):
 
 class Part2Solution(Day5Solution):
     def result(self):
-        return None
+        seeds, mappings = self.parse()
+        return min(
+            map(
+                itemgetter(0),
+                reduce(
+                    self.remap,
+                    mappings,
+                    ((x, x + y) for x, y in zip(*[iter(seeds)] * 2)),
+                ),
+            )
+        )
