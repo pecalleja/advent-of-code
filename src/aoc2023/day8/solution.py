@@ -1,38 +1,56 @@
 import re
+from functools import reduce
 from itertools import cycle
+from math import lcm
 
 from aoc2023 import Solution
 
-LETTERS = re.compile(r"[A-Z]{3}")
+NODE = re.compile(r"(\w+) = \((\w+), (\w+)\)")
 INSTRUCTIONS = "LR"
 
 
 class Day8Solution(Solution):
     network: dict = {}
-    instructions: iter
+    instructions: list
 
     def result(self):
         raise NotImplementedError
 
     def parse(self):
-        self.instructions = cycle(map(INSTRUCTIONS.find, self.data[0]))
+        self.instructions = list(map(INSTRUCTIONS.find, self.data[0]))
         for node in self.data[1:]:
-            key, left, right = LETTERS.findall(node)
+            key, left, right = NODE.findall(node)[0]
             self.network[key] = [left, right]
+
+    def step(self, node, instruction):
+        return self.network[node][instruction]
 
 
 class Part1Solution(Day8Solution):
     def result(self):
         self.parse()
+        instructions = cycle(self.instructions)
         step = "AAA"
         count = 0
         while step != "ZZZ":
-            instruction = next(self.instructions)
-            step = self.network[step][instruction]
+            instruction = next(instructions)
+            step = self.step(step, instruction)
             count += 1
         return count
 
 
 class Part2Solution(Day8Solution):
+    def find_cycle(self, node: str):
+        instructions = cycle(self.instructions)
+        count = 0
+        while not node.endswith("Z"):
+            instruction = next(instructions)
+            node = self.step(node, instruction)
+            count += 1
+        return count
+
     def result(self):
-        return None
+        self.parse()
+        nodes = filter(lambda x: x.endswith("A"), self.network.keys())
+        paths = list(map(self.find_cycle, nodes))
+        return reduce(lcm, paths)
