@@ -1,5 +1,6 @@
-from .solution import Part1Solution
-from .solution import Part2Solution
+import pytest
+
+from .solution import Day11Solution
 
 example_input = """
 ...#......
@@ -15,11 +16,9 @@ example_input = """
 """
 
 
-def test_part1():
-    result = Part1Solution(example_input).result()
-    assert result == 374
-
-
-def test_part2():
-    result = Part2Solution(example_input).result()
-    assert result is None
+@pytest.mark.parametrize("factor, output", [(2, 374), (10, 1030), (100, 8410)])
+def test_solution(factor, output):
+    part = Day11Solution(factor=factor, data=example_input)
+    part.factor = factor
+    result = part.result()
+    assert result == output

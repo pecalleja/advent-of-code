@@ -5,7 +5,7 @@ from abc import abstractmethod
 
 
 class Solution(ABC):
-    def __init__(self, data):
+    def __init__(self, data, *args, **kwargs):
         self.data = [x.strip() for x in data.splitlines() if x.strip()]
 
     @abstractmethod
@@ -13,11 +13,11 @@ class Solution(ABC):
         raise NotImplementedError
 
     @classmethod
-    def from_file(cls, filename=None):
+    def from_file(cls, filename=None, *args, **kwargs):
         if filename is None:
             class_file = inspect.getfile(cls)
             this_dir = os.path.dirname(class_file)
             filename = os.path.join(this_dir, "input.txt")
         with open(filename) as f:
             data = f.read()
-            return cls(data)
+            return cls(data, *args, **kwargs)
