@@ -22,4 +22,4 @@ def test_part1():
 
 def test_part2():
     result = Part2Solution(example_input).result()
-    assert result is None
+    assert result == 64
