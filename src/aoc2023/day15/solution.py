@@ -21,4 +21,15 @@ class Part1Solution(Day15Solution):
 
 class Part2Solution(Day15Solution):
     def result(self):
-        return None
+        buckets = [{} for _ in range(256)]
+        for step in self.data:
+            if step.endswith("-"):
+                key = step[:-1]
+                buckets[self.hash(key)].pop(key, None)
+            elif "=" in step:
+                key = step[: step.index("=")]
+                buckets[self.hash(key)][key] = int(step[step.index("=") + 1 :])
+        return sum(
+            (i + 1) * sum((j + 1) * n for j, n in enumerate(bucket.values()))
+            for i, bucket in enumerate(buckets)
+        )
