@@ -1,3 +1,5 @@
+from functools import reduce
+
 from aoc2023 import Solution
 
 
@@ -8,18 +10,13 @@ class Day15Solution(Solution):
     def result(self):
         raise NotImplementedError
 
+    def hash(self, string):
+        return reduce(lambda acc, c: 17 * (acc + ord(c)) % 256, string, 0)
+
 
 class Part1Solution(Day15Solution):
     def result(self):
-        result = 0
-        for string in self.data:
-            hash_result = 0
-            for c in string:
-                hash_result += ord(c)
-                hash_result *= 17
-                hash_result %= 256
-            result += hash_result
-        return result
+        return sum(map(self.hash, self.data))
 
 
 class Part2Solution(Day15Solution):
